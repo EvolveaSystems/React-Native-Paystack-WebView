@@ -20,6 +20,8 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
     refNumber,
     billingName,
     subaccount,
+    transaction_charge,
+    bearer,
     handleWebViewMessage,
     onCancel,
     autoStart = false,
@@ -55,6 +57,10 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
   
   const subAccountString = subaccount ? `subaccount: '${subaccount}',` : ''; // should only send subaccount with the correct subaccoount_code if you want to enable split payment on transaction
 
+  const transactionChargeString = transaction_charge ? `transaction_charge: '${transaction_charge}',` : ''; // should only send transaction_charge (in kobo) if you wish to override split and sed the flat fee that goes into the main account
+
+  const bearerString = bearer ? `bearer: 'subaccount',` : ''; // should only send bearer if you wish to make the subaccount bear the paystack charges ad ensure the amount going to the subaccount is enough to bear the charges
+
   const Paystackcontent = `   
       <!DOCTYPE html>
       <html lang="en">
@@ -80,6 +86,8 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
                 ${getChannels(channels)}
                 ${refNumberString}
                 ${subAccountString}
+                ${transactionChargeString}
+                ${bearerString}
                 metadata: {
                 custom_fields: [
                         {
